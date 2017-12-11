@@ -169,13 +169,9 @@ Viterbi School of Engineering \\
 University of Southern California \\
 Accepted by: \\
 Cyrus Shahabi, Qualifying and Defense Committee Chair \\
-Li Xiong, Qualifying and Defense Committee Member \\
-Muhammad Naveed, Defense Committee Member \\
-Panayiotis Georgiou, Defense External Committee Member \\
-Shahram Ghandeharizadeh, Qualifying Committee Member \\
-Ulrich Neumann, Qualifying Committee Member \\
-Aleksandra Korolova, Qualifying Committee Member \\
-Lian Jian, External Committee Member \\
+Li Xiong, Committee Member \\
+Aiichiro Nakano, Committee Member \\
+Panayiotis Georgiou, External Committee Member \\
 %Yannis C. Yortsos, Vice Provost and Dean of Graduate Studies \\
 
 %      A Dissertation Presented to the     \\

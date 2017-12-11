@@ -55,12 +55,8 @@
 
 \newcommand{\INDSTATE}[1][1]{\STATE\hspace{#1\algorithmicindent}}
 
-\long\def\BL{\textsc{Baseline}}
-\long\def\LM{\textsc{Limit}}
-\long\def\LMS{\textsc{Limit-SS}}
-\long\def\LMC{\textsc{Limit-CB}}
-
-\newcommand{\PGC}{{\em PrivGeoCrowd}}
+\newcommand{\PGC}{{PrivGeoCrowd}}
+\newcommand{\SCG}{{SCGuard}}
 
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
@@ -69,10 +65,8 @@
 \newtheorem{thmun}{Theorem}
 \newtheorem{cor}[thm]{Corollary}
 \newtheorem{lem}[thm]{Lemma}
-%\theoremstyle{definition}
 \newtheorem{defn}[thm]{Definition}
 \newtheorem{ex}[thm]{Example}
-%\theoremstyle{plain}
 
 \numberwithin{equation}{chapter}
 
@@ -202,7 +196,7 @@ More concretely, we first assume the \emph{online} tasking strategy, which has b
 	\label{fig:tasking_framework}
 \end{figure}
 
-To address this challenge of location uncertainty, we partition the online tasking setting into a three-stage privacy-aware framework, dubbed SCGuard (see Table~\ref{tab:stages}). SCGuard involves different parties at each stage of the task assignment to ensure effective tasking. This is achieved through revealing users' locations gradually, only if needed, as the tasking proceeds from one stage to the other. In the first stage, the server recommends a small set of nearby \emph{candidate workers} for a given task (without knowing the exact locations of either party); the server then forwards the perturbed locations of these workers to the task's requester. On receipt of these perturbed locations, in the second stage, the requester identifies the most likely reachable worker and sends the task location to this worker. Once receiving the exact location of the task, in the final stage, the selected worker accepts the task if it is enclosed within his spatial region; otherwise, he rejects the task. Hence, it is possible for a candidate worker to learn the exact location of the task even when the worker is not reachable to the task; we quantify this disclosure later. The last two stages may repeat until either the task is assigned or no candidate worker is left.
+To address this challenge of location uncertainty, we partition the online tasking setting into a three-stage privacy-aware framework, dubbed \SCG\ (see Table~\ref{tab:stages}). \SCG\ involves different parties at each stage of the task assignment to ensure effective tasking. This is achieved through revealing users' locations gradually, only if needed, as the tasking proceeds from one stage to the other. In the first stage, the server recommends a small set of nearby \emph{candidate workers} for a given task (without knowing the exact locations of either party); the server then forwards the perturbed locations of these workers to the task's requester. On receipt of these perturbed locations, in the second stage, the requester identifies the most likely reachable worker and sends the task location to this worker. Once receiving the exact location of the task, in the final stage, the selected worker accepts the task if it is enclosed within his spatial region; otherwise, he rejects the task. Hence, it is possible for a candidate worker to learn the exact location of the task even when the worker is not reachable to the task; we quantify this disclosure later. The last two stages may repeat until either the task is assigned or no candidate worker is left.
 
 \begin{table}[ht]
 \begin{center}
@@ -211,7 +205,7 @@ To address this challenge of location uncertainty, we partition the online taski
 \hline
 \textbf{Stage}					& \textbf{By} & \textbf{Input} 				& \textbf{Output} \\
 \hline
-\textbf{1} 	& Server	&  Uncertain task location, uncertain workers' locations			&  A set of \emph{candidate workers} for a given task \\ 
+\textbf{1} 	& SC-Server	&  Uncertain task location, uncertain workers' locations			&  A set of \emph{candidate workers} for a given task \\ 
 \hline
 \textbf{2}	& Requester & The uncertain candidate workers recommended by the server & The worker of the \emph{highest rank} \\  
 \hline
@@ -223,16 +217,16 @@ To address this challenge of location uncertainty, we partition the online taski
 \end{center}
 \end{table}
 
-A key component in each stage of the above framework is to determine whether a task is reachable from a worker. We first devise a baseline solution by assuming the perturbed locations of tasks and workers as their actual locations. We call this baseline the ``oblivious" technique, as it is oblivious to the fact that the locations are perturbed and not real. Obviously, the utility of this approach is very low. To improve the utility of the oblivious approach, we propose analytical and empirical models to quantify the probability of reachability between a task and a worker in each stage of SCGuard. Thereafter, we introduce a probability-based solution that improves the baseline in several metrics, including a higher number of assigned tasks, smaller worker travel cost and lower disclosure of location information. 
+A key component in each stage of the above framework is to determine whether a task is reachable from a worker. We first devise a baseline solution by assuming the perturbed locations of tasks and workers as their actual locations. We call this baseline the ``oblivious" technique, as it is oblivious to the fact that the locations are perturbed and not real. Obviously, the utility of this approach is very low. To improve the utility of the oblivious approach, we propose analytical and empirical models to quantify the probability of reachability between a task and a worker in each stage of \SCG. Thereafter, we introduce a probability-based solution that improves the baseline in several metrics, including a higher number of assigned tasks, smaller worker travel cost and lower disclosure of location information. 
 
 The contributions of this paper are as follows.
 \vspace{0.05in}
 
-\noindent \textbf{1)} We propose SCGuard, a privacy-aware framework that enables workers and requesters to participate in SC without compromising their location privacy. To the best of our knowledge, this is the first work designed to protect the privacy of both parties in SC without assuming any trusted entity.
+\noindent \textbf{1)} We propose \SCG, a privacy-aware framework that enables workers and requesters to participate in SC without compromising their location privacy. To the best of our knowledge, this is the first work designed to protect the privacy of both parties in SC without assuming any trusted entity.
 
-\noindent \textbf{2)} We propose the analytical and empirical models to quantify the worker-task pair reachability in every stage of SCGuard, based on which of the probabilistic tasking algorithm is introduced.
+\noindent \textbf{2)} We propose the analytical and empirical models to quantify the worker-task pair reachability in every stage of \SCG, based on which of the probabilistic tasking algorithm is introduced.
 
-\noindent \textbf{3)} We conduct an extensive set of experiments on a real-world dataset, named T-Drive~\cite{yuan2010t}, showing three main results. First, the analytical model performs as well as the empirical model without relying on precomputation on past or synthetic data. Second, our probabilistic tasking algorithm is superior to the baseline in all key metrics, including a higher number of assigned tasks ($\times 3$), smaller worker travel cost ($2/3$) and lower disclosure of task location ($/100$), with only a slight increase in system overhead ($20\%$). Third, SCGuard is able to protect location privacy of both workers and requesters without significantly compromising the key metrics of the SC system.
+\noindent \textbf{3)} We conduct an extensive set of experiments on a real-world dataset, named T-Drive~\cite{yuan2010t}, showing three main results. First, the analytical model performs as well as the empirical model without relying on precomputation on past or synthetic data. Second, our probabilistic tasking algorithm is superior to the baseline in all key metrics, including a higher number of assigned tasks ($\times 3$), smaller worker travel cost ($2/3$) and lower disclosure of task location ($/100$), with only a slight increase in system overhead ($20\%$). Third, \SCG\ is able to protect location privacy of both workers and requesters without significantly compromising the key metrics of the SC system.
 
 \chapter{Background in Spatial Crowdsourcing}
 \section{Taxonomy of Spatial Crowdsourcing}
@@ -249,24 +243,23 @@ Spatial crowdsourcing opens up a new mechanism for spatial tasks (i.e., tasks re
 A major challenge in any crowdsourcing system is how to motivate people to participate. Four levels of worker motivation can be found in \cite{quinn2011human}, including pay, altruism, fun and implicit. To simplify, crowdsourcing can be classified based on the motivation of the workers into two classes: \textit{reward-based} and \textit{self-incentivised} (Figure \ref{fig:taxonomy}). With reward-based spatial crowdsourcing, every spatial task has a price (assigned by a requester) and workers will receive a certain reward for every spatial task they perform correctly. Examples of this class include \cite{fieldagent,gigwalk}. With self-incentivised spatial crowdsourcing, workers volunteer to perform the tasks or usually have other incentives rather than receiving a reward such as documenting an event or promoting their cultural, political or religious views. An example of this class is \cite{trafficucb}, in which more than 5000 users voluntarily install traffic software onto their phones and report traffic information. Our work focuses on self-incentivised spatial crowdsourcing.
 
 \paragraph{Task Publishing Modes}
-Next, we define two task publishing modes in spatial crowdsourcing, \textit{Worker Selected Tasks (WST)} and \textit{Server Assigned Tasks (SAT)}. With the WST mode, the SC-server publishes the spatial tasks and online workers can choose any spatial task in their vicinity without the need to coordinate with the server. One advantage of the WST mode is that the workers do not need to reveal their locations to SC-server since they can choose any arbitrary task in their vicinity autonomously. However, one drawback of this mode is that the server does not have any control over the allocation of spatial tasks. This may result in some spatial tasks never be assigned, while others are assigned redundantly. Another drawback of WST is that workers choose tasks based on their own objectives (e.g., choosing the $k$ closest spatial tasks to minimize their travel cost), which may not result in a globally optimal assignment. An example of the WST mode is \cite{alt2010location}, where the workers browse for available spatial tasks, and pick the ones in their neighborhood.
+Next, we define two task publishing modes in spatial crowdsourcing, \emph{pull} and \emph{push}. With the pull mode, the SC-server publishes the spatial tasks and online workers can choose any spatial task in their vicinity without the need to coordinate with the server. One advantage of the pull mode is that the workers do not need to reveal their locations to SC-server since they can choose any arbitrary task in their vicinity autonomously. However, one drawback of this mode is that the server does not have any control over the allocation of spatial tasks. This may result in some spatial tasks never be assigned, while others are assigned redundantly. Another drawback of the pull mode is that workers choose tasks based on their own objectives (e.g., choosing the $k$ closest spatial tasks to minimize their travel cost), which may not result in a globally optimal assignment. An example of the pull mode is \cite{alt2010location}, where the workers browse for available spatial tasks, and pick the ones in their neighborhood.
 
-With the SAT mode, the SC-server does not publish the spatial tasks to the workers. Instead, any online worker sends his location to the SC-server. The SC-server after receiving the locations of all online workers, assigns to every worker his closeby tasks. The advantage of SAT is that unlike WST, the SC-server has the big picture, and therefore, can assign to every worker his nearby tasks while maximizing the overall task assignment. Examples of this mode of spatial crowdsourcing include \cite{kazemi2012geocrowd} and \cite{kazemi2011privacy}. In \cite{kazemi2011privacy}, a framework for small campaigns is proposed, where workers are assigned to their closeby sensing tasks. However, the drawback is that the workers should report their locations to the server for every assignment, which can pose a privacy threat. Recently in \cite{to2014framework}, a framework was proposed to sanitize workers' locations according to differential privacy while still using SC-server as a broker to assign tasks to workers. A real-world example of the SAT mode is Uber\footnote{https://www.uber.com/}, a mobile app that connects passengers with drivers of vehicles for ridesharing. Our focus in this paper is on this mode of spatial crowdsourcing.
+With the push mode, the SC-server does not publish the spatial tasks to the workers. Instead, any online worker sends his location to the SC-server. The SC-server after receiving the locations of all online workers, assigns to every worker his closeby tasks. The advantage of the push mode is that unlike the pull mode, the SC-server has the big picture, and therefore, can assign to every worker his nearby tasks while maximizing the overall task assignment. Examples of this mode of spatial crowdsourcing include \cite{kazemi2012geocrowd} and \cite{kazemi2011privacy}. In \cite{kazemi2011privacy}, a framework for small campaigns is proposed, where workers are assigned to their closeby sensing tasks. However, the drawback is that the workers should report their locations to the server for every assignment, which can pose a privacy threat. Recently in~\cite{to2014framework}, a framework was proposed to sanitize workers' locations according to differential privacy while still using SC-server as a broker to assign tasks to workers. A real-world example of the push mode is Uber\footnote{https://www.uber.com/}, a mobile app that connects passengers with drivers of vehicles for ridesharing. Our focus in this paper is on this mode of spatial crowdsourcing.
 
 \paragraph{Worker's Constraints}
-Finally, in the case of SAT, we divide the workers into two groups based on whether or not they have constraints. With workers without constraints, the server has full flexibility on how tasks should be assigned to the workers. This means that workers only send their locations to the server, and the server assigns every spatial task to its nearby worker \cite{kazemi2011privacy}. With workers with constraints, the server needs to satisfy the constraints while assigning the tasks. An example of spatial constraint is that every worker only accepts spatial tasks in a spatial region (i.e., his working region).
+Finally, in the case of the push mode, we divide the workers into two groups based on whether or not they have constraints. With workers without constraints, the server has full flexibility on how tasks should be assigned to the workers. This means that workers only send their locations to the server, and the server assigns every spatial task to its nearby worker \cite{kazemi2011privacy}. With workers with constraints, the server needs to satisfy the constraints while assigning the tasks. An example of spatial constraint is that every worker only accepts spatial tasks in a spatial region (i.e., his working region).
 
 \section{Comparison to Other Fields of Study}
 \textbf{Crowdsourcing:} Crowdsourcing has recently been attracting extensive attention in the research community. A recent survey in this area can be found in \cite{kittur2013future}. With a growing recognition of crowdsourcing, many crowdsourcing services including oDesk \cite{odesk}, MTurk \cite{mturk} and CrowdFlower \cite{Crowdflower} have emerged, which allow requesters to issue tasks that workers can perform for a certain reward. Crowdsourcing has been largely adopted in a wide range of applications. Examples of such applications include but are not limited to image search \cite{yan2010crowdsearch}, natural language annotations \cite{snow2008cheap}, video and image annotations \cite{chen2009crowdsourceable}, \cite{sorokin2008utility} and \cite{whitehill2009whose}, search relevance \cite{alonso2008crowdsourcing} and \cite{bozzon2012answering}, social games \cite{von2008designing} and \cite{guy2011guess} and graph search \cite{parameswaran2011human}. Moreover, the database community has utilized crowdsourcing in database design, query processing \cite{franklin2011crowddb}, \cite{marcus2011human}, \cite{parameswaran2012crowdscreen}, \cite{demartini2013crowdq} and \cite{zhao2013crowdseed} and data analytics \cite{liu2012cdas} and \cite{wang2012crowder}. In \cite{franklin2011crowddb}, a relational query processing system is proposed, which uses crowdsourcing to answer queries that cannot otherwise be answered. As part of the crowdsourced database systems, human-powered versions of the fundamental operators, such as sort and join \cite{marcus2011human} and filter \cite{parameswaran2012crowdscreen} were developed. Recently in \cite{liu2012cdas}, a system was developed to improve the accuracy of data analytics jobs by exploiting crowdsourcing techniques.
 
 %Since the workers cannot always be trusted, as a future work, we aim to tackle the issue of trust by having tasks performed redundantly by multiple workers. This would require maintaining a reputation scheme for workers and requesters.
 
-\textbf{Spatial Crowdsourcing:} Despite all the studies on crowdsourcing, spatial crowdsourcing only recently received some attention \cite{to2014framework,deng2013maximizing,kazemi2013geotrucrowd,dang2013maximum,kazemi2012geocrowd,alt2010location}. In \cite{alt2010location}, a crowdsourcing platform is proposed, which utilizes location as a parameter to distribute tasks among workers. In \cite{kazemi2012geocrowd}, a spatial crowdsourcing platform whose goal is to maximize the number of assigned tasks is proposed. Since the workers cannot always be trusted, another work aims to tackle the issue of trust by having tasks performed redundantly by multiple workers \cite{kazemi2013geotrucrowd}. In \cite{dang2013maximum}, the problem of complex spatial tasks (i.e., each task comprises of a set of spatial sub-tasks) is introduced, in which the assignment of the complex task requires performing all of its sub-tasks. Meanwhile, the problem of scheduling tasks for a worker that maximizes the number of performed tasks is proposed in \cite{deng2013maximizing}. In \cite{Hassan2014a}, an online spatial task assignment problem is suggested to maximize the number of successful assignments. Recently in \cite{to2014framework}, the authors introduced the problem of protecting worker location privacy in spatial crowdsourcing. This study proposes a framework that achieves differentially-private protection guarantees. The solutions for this problem are quite complex, and require tuning multiple parameters to obtain satisfactory results. Thus, the same authors propose PrivGeoCrowd \cite{to2015privgeocrowd}, an interactive visualization and tuning toolbox for privacy-preserving spatial crowdsourcing. PrivGeoCrowd helps system designers investigate the effect of parameters such as privacy budget and allocation strategy, task-assignment heuristics, dataset density on the effectiveness of private task matching. At the same time, privacy-preserving task assignment using cloaked locations is proposed in \cite{pournajaf2014spatial}.
+\textbf{Spatial Crowdsourcing:} Despite all the studies on crowdsourcing, spatial crowdsourcing only recently received some attention~\cite{to2014framework,deng2013maximizing,kazemi2013geotrucrowd,dang2013maximum,kazemi2012geocrowd,alt2010location}. In \cite{alt2010location}, a crowdsourcing platform is proposed, which utilizes location as a parameter to distribute tasks among workers. In \cite{kazemi2012geocrowd}, a spatial crowdsourcing platform whose goal is to maximize the number of assigned tasks is proposed. Since the workers cannot always be trusted, another work aims to tackle the issue of trust by having tasks performed redundantly by multiple workers \cite{kazemi2013geotrucrowd}. In \cite{dang2013maximum}, the problem of complex spatial tasks (i.e., each task comprises of a set of spatial sub-tasks) is introduced, in which the assignment of the complex task requires performing all of its sub-tasks. Meanwhile, the problem of scheduling tasks for a worker that maximizes the number of performed tasks is proposed in \cite{deng2013maximizing}. In \cite{Hassan2014a}, an online spatial task assignment problem is suggested to maximize the number of successful assignments. Recently in~\cite{to2014framework}, the authors introduced the problem of protecting worker location privacy in spatial crowdsourcing. This study proposes a framework that achieves differentially-private protection guarantees. The solutions for this problem are quite complex, and require tuning multiple parameters to obtain satisfactory results. Thus, the same authors propose \PGC\ \cite{to2015privgeocrowd}, an interactive visualization and tuning toolbox for privacy-preserving spatial crowdsourcing. \PGC\ helps system designers investigate the effect of parameters such as privacy budget and allocation strategy, task-assignment heuristics, dataset density on the effectiveness of private task matching. At the same time, privacy-preserving task assignment using cloaked locations is proposed in \cite{pournajaf2014spatial}.
 
 Moreover, the problem of crowdsourcing location-based queries over Twitter has been studied, which employs a location-based service (e.g., Foursquare) to find the appropriate people to answer a given query \cite{bulut2011crowdsourcing}. Even though this work focuses on location based queries, it does not assign to users any spatial task, for which the user should go to that location and perform the corresponding task. Instead, it chooses users based on their historical Foursquare check-ins. In \cite{musthag2013labor}, spatiotemporal dynamics in mobile task markets, such as \cite{fieldagent,gigwalk}, were studied.
 
 The well-known concept of participatory sensing could be deemed as one class of spatial crowdsourcing, in which workers form a campaign to perform sensing tasks. Examples of participatory sensing campaigns include \cite{trafficucb,kazemi2011privacy,cornelius2008anonysense,hull2006cartel} and \cite{mohan2008nericell}.
-%In \cite{trafficucb}, a participatory sensing framework with WST mode is proposed, whereas, in \cite{kazemi2011privacy}, a participatory sensing framework with SAT mode is introduced. 
 However, the major drawback of all the existing work on participatory sensing is that they focus on a single campaign and try to address the challenges specific to that campaign. Another drawback of most existing studies on participatory sensing (e.g., \cite{kazemi2011privacy}) is that they are designed for small campaigns, with a small number of participants, and are not scalable to large spatial crowdsourcing applications. Finally, while most existing work on participatory sensing systems focus on a particular application, our work can be used for any type of spatial crowdsourcing system.
 
 Another class of spatial crowdsourcing is known as volunteered geographic information (or VGI), whose goal is to create geographic information provided voluntarily by individuals. Examples for this class include Google Map Maker \cite{GMM}, OpenStreetMap \cite{OSM} and WikiMapia \cite{wikimapia}. These projects allow the users to generate their own geographic content, and add it to a pre-built map. For example, a user can add the features of a location, or the events occurred at that location. However, the major difference between VGI and spatial crowdsourcing is that in VGI, users voluntarily participate by randomly contributing data, whereas in spatial crowdsourcing, a set of spatial tasks are queried by the requesters, and workers are required to perform those tasks. Moreover, with most VGI projects (\cite{GMM} and \cite{wikimapia}), users are not required to physically go to a particular location in order to generate data with respect to that location. Finally, as the name suggests, VGI falls into the class of self-incentivised crowdsourcing.
@@ -287,7 +280,31 @@ With VRP, all workers start from the same depot, whereas in spatial crowdsourcin
 \chapter{Survey of Related Work}
 \section{Spatial Crowdsourcing}
 Spatial Crowdsourcing (SC) has recently been attracting attention in both the research communities (e.g., \cite{kazemi2012geocrowd,deng2013maximizing,to2014framework,to2016real,to2016sc}) and industry (e.g., TaskRabbit, Gigwalk~\cite{musthag2013labor}).
-Various aspects of spatial crowdsourcing have been studied, including task assignment~\cite{kazemi2012geocrowd,dang2013maximum,pournajaf2014dynamic,Hassan2014a,to2015server,yu2015quality,ul2016efficient,to2016real}, task scheduling~\cite{deng2013maximizing,deng2015task}, trust~\cite{kazemi2013geotrucrowd,cheng2015reliable}, scalability~\cite{alfarrarjeh2015scalable}, incentives~\cite{musthag2013labor,teodoro2014motivations,thebault2015avoiding,to2016empirical} and applications~\cite{chen2014gmission,kim2014mediaq,to2015effectively,to2016scawg}.
+Various aspects of spatial crowdsourcing have been studied, including task assignment~\cite{kazemi2012geocrowd,dang2013maximum,
+pournajaf2014dynamic,Zhang2014,He2014a,Fonteles2014,Hassan2014a,
+to2015server,yu2015quality,Xiong2015,
+Xiao2015,UlHassan2015,Fonteles2015b,
+Guo2016a,Liu2016,Zhang2016c,tong2016online,tong2016vldb,Hu2016,
+Cheng2016,asghari12auction,Gao2016,Zhang2016SpatialRecruiter,
+ul2016efficient,Bessai2016,
+Tan2016,Liu2016b,ul2016efficient,to2016real,
+song2017trichromatic,zhao2017destination},
+task scheduling~\cite{deng2013maximizing,Sadilek2013,Chen2014TRACCS,
+deng2015task,Li2015,Hadano2015,Chen2015Towards,Fonteles2015a,Fonteles2015a,
+Mrazovic2016,SalesFonteles2016,Wang2016Towards,Sun2016,Deng2016},
+privacy~\cite{to2014framework,pournajaf2014spatial,
+Gong2015,zhang2015differentially,Hu2015,
+to2016sc,Shen2016,Zhu2016,ni2016secure,
+sun2017anonymity,liu2017protecting,liu2017privacy,liu2017efficient}, trust~\cite{kazemi2013geotrucrowd,cheng2015reliable,
+Feng2014,Boutsis2014,Song2014,
+Wang2015,Zhao2015,Kang2015,An2015,Fan2015Online,
+Zhang2016Reliable,Liu2016a},
+scalability~\cite{alfarrarjeh2015scalable},
+incentives~\cite{Lee2010,Alt2010,Yang2012,Jaimes2012,Heimerl2012,Musthag2012,
+musthag2013labor,teodoro2014motivations,Rula2014,
+thebault2015avoiding,Shah-Mansouri2015,Jin2015,
+Fan2016Truthful,Jaiman2016,Guo2016,to2016empirical,Li2016,
+Micholia2016,Miao2016,Kandappu2016a,Kandappu2016,Zhang2016Towards} and applications~\cite{chen2014gmission,kim2014mediaq,to2015effectively,to2016scawg}.
 In the following, we distinguishe SC from related fields, including crowdsourcing, participatory sensing, volunteered geographic information.
 
 \section{Privacy Threats}
@@ -416,7 +433,7 @@ The location must be in the overlapped area using triangulation. We validated ou
 
 \subsection{Location Privacy}
 Location privacy has been studied first within the model of spatial $k$-anonymity \cite{gruteser2003anonymous,kido2005anonymous,mca06,gedik2008protecting,xue2009location,dewri2010query,palanisamy2011mobimix}, where the location of a user is hidden among $k$ other users. Other studies focused on space transformation to preserve location privacy~\cite{khoshgozaran2007blind,yiu2008spacetwist}.
-Such techniques assume a centralized architecture with a trusted third party, which is a single point of attack. More recent work removes this assumption and provides cryptographic-strength protection~\cite{ghinita2008private}. While location privacy has largely been studied in the context of location-based services, only a few works have studied privacy in participatory sensing (PS)~\cite{kazemi2011towards,hu2010privacy,huang2009towards,cornelius2008anonysense}. The focus of~\cite{kazemi2011towards} is to privately assign a set of spatial tasks to each worker while other works \cite{hu2010privacy,huang2009towards} focus on preserving privacy in a PS campaign during the data contribution (i.e., how participants upload the collected data to the server without revealing their identities). Closest to our work is the approach from \cite{cornelius2008anonysense}, in which a privacy-preserving framework in WST mode is proposed, and the participants collect data in an opportunistic manner without the need to coordinate with the server. However, as discussed in Section~\ref{sec:taxonomy}, the WST mode yields poor results in practice. Furthermore, the privacy model in \cite{cornelius2008anonysense} does not provide formal privacy guarantees. In our work, we focus on the SAT case in the context of differential privacy, the de-facto standard for data publication.
+Such techniques assume a centralized architecture with a trusted third party, which is a single point of attack. More recent work removes this assumption and provides cryptographic-strength protection~\cite{ghinita2008private}. While location privacy has largely been studied in the context of location-based services, only a few works have studied privacy in participatory sensing (PS)~\cite{kazemi2011towards,hu2010privacy,huang2009towards,cornelius2008anonysense}. The focus of~\cite{kazemi2011towards} is to privately assign a set of spatial tasks to each worker while other works \cite{hu2010privacy,huang2009towards} focus on preserving privacy in a PS campaign during the data contribution (i.e., how participants upload the collected data to the server without revealing their identities). Closest to our work is the approach from \cite{cornelius2008anonysense}, in which a privacy-preserving framework in pull mode is proposed, and the participants collect data in an opportunistic manner without the need to coordinate with the server. However, as discussed in Section~\ref{sec:taxonomy}, the pull mode yields poor results in practice. Furthermore, the privacy model in \cite{cornelius2008anonysense} does not provide formal privacy guarantees. In our work, we focus on the push mode in the context of differential privacy, the de-facto standard for data publication.
 
 \subsection{Location Privacy in Spatial Crowdsourcing}
 
@@ -458,7 +475,9 @@ In this section we survey some state-of-the-art approaches addressing the privac
 \hline
 \cite{liu2017protecting} 								&  & x			& & & & x &		   & x &    &  &  & x 							&   & x	   \tn 
 \hline
-\cite{liu2017privacy} 								&  & x			& & & & x &		   & x & x    &  &  & x 							&   & x	 \tn 
+\cite{liu2017privacy} 								&  & x			& & & & x &		   & x & x    &  &  & x 							&   & x	 \tn
+\hline
+\cite{liu2017efficient} 								&  & x			& & & & x &		   & x & x    &  &  & x 							&   & x	 \tn
 \end{tabular}
 \end{center}
 \end{table*}
@@ -475,31 +494,28 @@ Focusing on tasking also makes sense from a disclosure volume standpoint. During
 
 Various techniques have been proposed to protect location privacy of workers during task assignment in SC, including \emph{cloaking} (hide the accurate location in a cloaked region)~\cite{kazemi2012geocrowd,Vu2012,pournajaf2014spatial,Hu2015}, \emph{perturbation} (distort the actual location information by adding artificial noise)~\cite{to2014framework,Gong2015,Zhang2015,to2016sc} and \emph{encryption}~\cite{Shin2011,Shen2016}.
 
-Several recent works addressed the topic of location privacy in spatial crowdsourcing~\cite{pournajaf2014spatial,to2015privgeocrowd,Gong15b,Gong15b,zhang2015differentially,hu2015protecting,Li15}.
+Several recent works addressed the topic of location privacy in spatial crowdsourcing~\cite{pournajaf2014spatial,to2015privgeocrowd,Gong15b,Gong15b,zhang2015differentially,hu2015protecting,Li2016}.
 A recent survey in this area can be found in~\cite{pournajaf2015participant}.
-Particularly, the approach in~\cite{Gong15a} proposes a framework that can protect the workers' location privacy when allocating tasks to the workers. The solution adopts the privacy model used in our work, i.e., it assumes a trusted CSP and differentially private location sanitization. Similar to our study published in \cite{to2014framework,to2016sc}, they develop analytical models and task allocation strategies that balance privacy, utility, and system overhead. The CSP can integrate mobile server location and reputation information.
+Particularly, the approach in~\cite{Gong15a} proposes a framework that can protect the workers' location privacy when allocating tasks to the workers. The solution adopts the privacy model used in our work, i.e., it assumes a trusted CSP and differentially private location sanitization. Similar to our study published in~\cite{to2014framework,to2016sc}, they develop analytical models and task allocation strategies that balance privacy, utility, and system overhead. The CSP can integrate mobile server location and reputation information.
 
-The work in~\cite{zhang2015differentially} studies reward-based spatial crowdsourcing that enables task assignment with optimized reward allocation. The authors also reuse our privacy framework introduced in \cite{to2014framework}, in which the SC-server and workers are connected by a trusted Cell Service Provider (CSP). The PSD receives exact locations from workers and releases a sanitized view to the SC-server, which is used to perform task assignment. 
-The approach in \cite{Gong15b} introduces a framework for protecting privacy of workers using location obfuscation techniques. This study assumes a trusted proxy to aggregate exact context (e.g., location) information from workers and output sanitized contexts to the SC-server. The authors develop an optimization model for task selection that maximizes the total expected utility of the server given constraints on privacy and efficiency. However, only worker statistics are protected under differential privacy, whereas locations are obfuscated using cloaking techniques. Location cloaking is vulnerable to background knowledge attacks, and does not provide sufficient protection strength. In contrast, our work provides the strong semantic protection guarantees of differential privacy. Finally, the recent work in \cite{Li15} addresses both location privacy and incentives in mobile sensing systems by proposing two credit-based privacy-aware incentive schemes. One of them assumes an online trusted third party, similar to our CSP-centered approach. 
+The work in~\cite{zhang2015differentially} studies reward-based spatial crowdsourcing that enables task assignment with optimized reward allocation. The authors also reuse our privacy framework introduced in~\cite{to2014framework}, in which the SC-server and workers are connected by a trusted Cell Service Provider (CSP). The PSD receives exact locations from workers and releases a sanitized view to the SC-server, which is used to perform task assignment. 
+The approach in \cite{Gong15b} introduces a framework for protecting privacy of workers using location obfuscation techniques. This study assumes a trusted proxy to aggregate exact context (e.g., location) information from workers and output sanitized contexts to the SC-server. The authors develop an optimization model for task selection that maximizes the total expected utility of the server given constraints on privacy and efficiency. However, only worker statistics are protected under differential privacy, whereas locations are obfuscated using cloaking techniques. Location cloaking is vulnerable to background knowledge attacks, and does not provide sufficient protection strength. In contrast, our work provides the strong semantic protection guarantees of differential privacy. Finally, the recent work in~\cite{Li2016} addresses both location privacy and incentives in mobile sensing systems by proposing two credit-based privacy-aware incentive schemes. One of them assumes an online trusted third party, similar to our CSP-centered approach. 
 
 Other studies~\cite{pournajaf2014spatial,hu2015protecting} use cloaking technique (i.e., not distinguish among other $k$ workers) thus do not provide rigorous privacy protection. Cloaking technique not only reveals workers' identities but also is prone to homogeneity attack~\cite{machanavajjhala2007diversity} when all $k$ workers are at the same location.
-The study in~\cite{Li15} uses cryptography, which is computationally expensive; thus, it is not designed for real-time spatial crowdsourcing applications.
+The study in~\cite{Li2016} uses cryptography, which is computationally expensive; thus, it is not designed for real-time spatial crowdsourcing applications.
 
 %Spatial crowdsourcing (SC) has gained popularity in both the research community (e.g., \cite{kazemi2012geocrowd,to2014framework,tong2016online,liu2017protecting,tran2017real}) and industry (e.g., TaskRabbit, Gigwalk). A recent study \cite{to2015server} distinguishes SC from related fields, such as generic crowdsourcing, participatory sensing, volunteered geographic information, and online matching. We review the literature from the following two aspects: location privacy threats in SC and privacy-preserving task assignment in SC.
-%
+
 %\textbf{Location Privacy Threats:}
-%Protecting location privacy in SC has attracted much interest.
-%There have been known attacks on SC applications, such as location-based attacks during tasking in the push mode~\cite{kazemi2011privacy} and collusion attacks during reporting in the pull mode~\cite{Wang2016}. A recent survey~\cite{to2017location} shows that locations of workers and requesters' tasks can be learned during both tasking and reporting phases. Hence, various techniques have been proposed to protect location privacy of workers during tasking, including cloaking (hide the accurate location in a cloaked region)~\cite{pournajaf2014spatial}, perturbation (distort the actual location information by adding artificial noise)~\cite{to2014framework,to2017differentially,wang2017location,jin2016dpsense} and encryption~\cite{liu2017protecting,pham2017privateride}. We compare these studies as follows.
-%
+%Protecting location privacy in SC has attracted much interest. There have been known attacks on SC applications, such as location-based attacks during tasking in the push mode~\cite{Kazemi2011a} and collusion attacks during reporting in the pull mode~\cite{Wang2016}. A recent survey~\cite{to2017location} shows that locations of workers and requesters' tasks can be learned during both tasking and reporting phases. Hence, various techniques have been proposed to protect location privacy of workers during tasking, including cloaking (hide the accurate location in a cloaked region)~\cite{pournajaf2014spatial}, perturbation (distort the actual location information by adding artificial noise)~\cite{to2014framework,to2017differentially,wang2017location,jin2016dpsense} and encryption~\cite{liu2017protecting,pham2017privateride}. We compare these studies as follows.
+
 %\textbf{Privacy-Preserving Task Assignment:}
-%In~\cite{pournajaf2014spatial}, given the cloaking regions of a set of workers, the objective of the server is to match a set of spatial
-%tasks to the workers such that task assignment is maximized while satisfying the travel budget constraint of each worker. Unlike our work, this study protects workers' locations solely. Also, the privacy guarantee is weaker than differential privacy, as cloaking is sensitive to the adversary's prior knowledge. Simultaneously, a differentially private framework is proposed to protect the privacy of workers' locations~\cite{to2014framework}. In~\cite{to2014framework}, the workers do not trust the server but send their locations to a trusted third party (i.e., cell service provider). The third party sanitizes the location data according to differential privacy and releases the so-called private spatial decomposition (PSD). The server performs task assignment using the statistics of the workers' location data provided by the PSD, while the workers refine the assignment using their exact locations. An extension of~\cite{to2014framework} that protects workers' locations across multiple timestamps is introduced in~\cite{to2017differentially}. This study investigates privacy budget allocation techniques across consecutive releases and employs post-processing techniques to reduce the inaccuracy introduced by the addition of noise. Our work improves~\cite{to2014framework,to2017differentially} in two main aspects. First, the proposed privacy model is broader than that in the prior work---workers and requesters may not trust each other and the server. Second, this work does not require any trusted third party to sanitize the location data; instead, individual users locally perform location sanitization on their smartphones.
-%
+%In~\cite{pournajaf2014spatial}, given the cloaking regions of a set of workers, the objective of the server is to match a set of spatial tasks to the workers such that task assignment is maximized while satisfying the travel budget constraint of each worker. Unlike our work, this study protects workers' locations solely. Also, the privacy guarantee is weaker than differential privacy, as cloaking is sensitive to the adversary's prior knowledge. Simultaneously, a differentially private framework is proposed to protect the privacy of workers' locations~\cite{to2014framework}. In~\cite{to2014framework}, the workers do not trust the server but send their locations to a trusted third party (i.e., cell service provider). The third party sanitizes the location data according to differential privacy and releases the so-called private spatial decomposition (PSD). The server performs task assignment using the statistics of the workers' location data provided by the PSD, while the workers refine the assignment using their exact locations. An extension of~\cite{to2014framework} that protects workers' locations across multiple timestamps is introduced in~\cite{to2017differentially}. This study investigates privacy budget allocation techniques across consecutive releases and employs post-processing techniques to reduce the inaccuracy introduced by the addition of noise. Our work improves~\cite{to2014framework,to2017differentially} in two main aspects. First, the proposed privacy model is broader than that in the prior work---workers and requesters may not trust each other and the server. Second, this work does not require any trusted third party to sanitize the location data; instead, individual users locally perform location sanitization on their smartphones.
+
 %Geo-I has been recently used in task allocation to protect the privacy of workers' locations~\cite{wang2017location}. However, similar to the prior work~\cite{pournajaf2014spatial,to2014framework,to2017differentially}, this study assumes that task locations are known to the server. This can be a privacy threat to the tasks' requesters because the platform can infer requesters' locations from the locations of their tasks~\cite{to2017location}. In contrast, our framework aims to protect locations of both workers and tasks. We also emphasize the online setting rather than the offline variant as in~\cite{wang2017location}, in which the server must wait for a number of tasks to arrive prior to task assignment. In~\cite{jin2016dpsense}, Jin et al. propose a differentially private framework to select participants while participating in the spectrum-sensing tasks. Unlike ours, this study addresses a very different problem, in which the sensing locations are predetermined and publicly known.
-%%Differential location privacy for sparse mobile crowdsensing~\cite{wang2016differential}
-%
-%A few recent studies use encryption-based approaches~\cite{liu2017protecting,pham2017privateride}. In~\cite{liu2017protecting}, locations of workers and tasks are protected by homomorphic encryption. The platform performs task assignment based on the worker-task distances computed from the encrypted data. The workers receive the encrypted location of the assigned task and decrypt it to obtain the task location. While this approach guarantees exact assignment, its computation overhead is high.
-%A closely related topic of research is the privacy-preserving ride-sharing service~\cite{pham2017privateride}. This work designs a cryptographic protocol to protect riders' and drivers' identifiable information, including location.
+
+%A few recent studies use encryption-based approaches~\cite{liu2017protecting,pham2017privateride}. In~\cite{liu2017protecting}, locations of workers and tasks are protected by homomorphic encryption. The platform performs task assignment based on the worker-task distances computed from the encrypted data. The workers receive the encrypted location of the assigned task and decrypt it to obtain the task location. While this approach guarantees exact assignment, its computation overhead is high. A closely related topic of research is the privacy-preserving ride-sharing service~\cite{pham2017privateride}. This work designs a cryptographic protocol to protect riders' and drivers' identifiable information, including location. However, this study uses a cloaking technique, which is vulnerable to background knowledge attack.
+
 
 
 \chapter{Privacy-Preserving Task Assignment}\label{ch.PPTA}
@@ -582,7 +598,7 @@ d_\epsilon(x)(z)=\frac{\epsilon^2}{2\pi}e^{-\epsilon d(x,z)}
 \end{equation}
 where $\frac{\epsilon^2}{2\pi}$ is a normalization factor.
 
-%Geo-I provides privacy protection to a single individual's location data as opposed to aggregate information, which suits our SCGuard framework to be presented next.
+%Geo-I provides privacy protection to a single individual's location data as opposed to aggregate information, which suits our \SCG\ framework to be presented next.
 
 \subsection{Private Spatial Decompositions (PSD)}
 \label{sec:PSD-prelim}
@@ -617,7 +633,7 @@ Section~\ref{sec:metrics1} discusses design challenges and associated performanc
 
 \subsubsection{System Model}
 \label{sec:system1}
-We consider the problem of privacy-preserving SC {\em task assignment} in the SAT mode. Figure~\ref{fig:framework} shows the proposed system architecture. Workers send their locations (Step $0$) to a trusted {\em cellular service provider (CSP)} which collects updates and releases a PSD according to privacy budget $\epsilon$ mutually agreed upon with the workers. The PSD is accessed by the {\em SC-server} (Step $1$), which also receives tasks from a number of {\em requesters} (Step $2$). For simplicity, we focus on the single-SC-server case, but our system model can support multiple SC-servers.
+We consider the problem of privacy-preserving SC {\em task assignment} in the push mode. Figure~\ref{fig:framework} shows the proposed system architecture. Workers send their locations (Step $0$) to a trusted {\em cellular service provider (CSP)} which collects updates and releases a PSD according to privacy budget $\epsilon$ mutually agreed upon with the workers. The PSD is accessed by the {\em SC-server} (Step $1$), which also receives tasks from a number of {\em requesters} (Step $2$). For simplicity, we focus on the single-SC-server case, but our system model can support multiple SC-servers.
 
 When the SC-server receives a task $t$, it queries the PSD to determine a {\em geocast region (GR)} that encloses with high probability workers close to $t$. Due to the uncertain nature of the PSD, this is a challenging process which will be detailed later in Section~\ref{sec:geocast}. Next, the SC-server initiates a {\em geocast} communication \cite{navas1997geocast} process (Step $3$) to disseminate $t$ to all workers within $\mathit{GR}$. According to DP, sanitizing a dataset requires creation of fake locations in the PSD. If the SC-server is allowed to directly contact workers, then failure to establish a communication channel would breach privacy, as the SC-server is able to distinguish fake workers from real ones. Using geocast is a unique feature of our framework which is necessary to achieve protection. Geocast can be performed either with the help of the CSP infrastructure, or through a mobile ad-hoc network where the CSP contacts a single worker in the $\mathit{GR}$, and then the message is disseminated on a hop-by-hop basis to the entire $\mathit{GR}$. The latter approach keeps CSP overhead low, and can reduce operation costs for workers.  
 
@@ -644,7 +660,7 @@ However, the CSP has no expertise, and perhaps no financial interest, to host an
 \subsubsection{Design Goals and Performance Metrics}
 \label{sec:metrics1}
 Protecting worker location complicates significantly task assignment, and may reduce the effectiveness and efficiency of worker-task matching. Due to the nature of DP, it is possible for a region to contain no workers, even if the PSD shows a positive count. Therefore, no workers (or an insufficient number thereof) may be notified of the task request. The task may not be completed. Alternatively, a worker may be notified of the task even though she is at a long distance away from the task location, whereas a nearer worker does not receive the request. 
-Finally, in the non-private SAT case, only one selected worker, whose location and identity is known, is notified of the task request. 
+Finally, in the non-private push mode, only one selected worker, whose location and identity is known, is notified of the task request. 
 With location protection, redundant messages need to be sent, increasing overhead.
 We focus on the following performance metrics:
 \begin{itemize}
@@ -956,7 +972,7 @@ We assume a discrete time model, where the SC server receives task requests at $
 Since many (or all) of the workers appear in multiple PSDs at distinct timestamps, an adversary has more opportunities to breach the location privacy of workers by correlating information from consecutive PSDs. In the context of differential privacy, this increased knowledge available to the adversary is modeled as an increase in $L_1$-sensitivity. Specifically, in the worst case, the sensitivity grows from $2$ for a single snapshot to $2 \times T$ for a set of $T$ released PSDs. On the other hand, the amount of privacy budget $\epsilon$ remains unchanged. Hence, the problem of privacy-preserving spatial task assignment for multiple snapshots is significantly more challenging than its single-snapshot counterpart. 
 
 \noindent
-{\bf Problem Statement.} Given a set of discrete timestamps $\mathcal{T} = \{t_1, \ldots, t_T\}$, $T>1$, and a privacy budget $\epsilon$, release a set of private spatial decompositions $\{PSD_1, \ldots, PSD_T\}$ that satisfies $\epsilon$-differential privacy and supports effective spatial task assignment as measured by performance metrics ASR, WTD and ANW.
+{\bf Problem Statement.} Given a set of discrete timestamps $\mathcal{T} = \{t_1, \ldots, t_T\}$, $T>1$, and a privacy budget $\epsilon$, release a set of private spatial decompositions $\{PSD_1, \ldots, PSD_T\}$ that satisfies $\epsilon$-differential privacy and supports effective spatial task assignment as measured by performance metrics $\mathit{ASR}$, $\mathit{WTD}$ and $\mathit{ANW}$.
 
 A baseline solution, denoted as $\mathit{BasicD}$ ({\em basic dynamic}), is to repeatedly apply our single-snapshot PSD algorithm at every timestamp, disregarding correlation between data at different timestamps.  At each timestamp, only a fraction $\frac{\epsilon}{T}$ of the entire privacy budget is used, which according to the sequential composition theorem~\cite{cormode2012differentially} guarantees that the overall algorithm satisfies $\epsilon$-differential privacy. The {\em BasicD} pseudocode is presented in Algorithm \ref{algo:basicd}.  However, as $T$ grows, the amount of budget received by the PSD at each timestamp decreases, resulting in a high amount of noise that needs to be added to each worker count. Consequently, the released sanitized data become unusable, and the quality of task assignment decreases significantly. Next, we propose a technique that addresses the limitations of {\em BasicD}. 
 
@@ -966,9 +982,7 @@ A baseline solution, denoted as $\mathit{BasicD}$ ({\em basic dynamic}), is to r
 \begin{algorithmic}[1]
 \STATE \textbf{Input:} $T$, worker location datasets $\{D_1, ..., D_T\}$, budget $\epsilon$ \\
 \STATE \textbf{Output:} $\mathit{PSD_1}$ \\
-%\STATE $\mathit{PSD_1}$ $\leftarrow$ Publish $PSD_1$ of $D_1$ with budget $\epsilon$\\
 \STATE  Publish $PSD_1$ of $D_1$ with budget $\epsilon$\\
-%\STATE $\mathit{PSD}$ $\leftarrow$ Adjust consistency of $\mathit{PSD}$ 
 \end{algorithmic}
 \caption{BasicS Algorithm} \label{algo:basics}
 \end{algorithm}
@@ -1029,7 +1043,7 @@ Figure \ref{fig:workerpsd_fast} illustrates the two-level grid decomposition rep
 \textbf {Choosing an appropriate $f$ value.}
 A larger $f$ value allocates more budget for PSD construction in the initial timestamp, which increases the number of level-2 cells, providing finer granularity. However, a larger $f$ also reduces the budget for later timestamps, which may lead to high noise-to-real-count ratio. To balance these two factors, we propose a simple analytical model to select $f$.
 
-Assume a simplified version of Algorithm~\ref{algo:kalman} where the noisy counts of individual PSD cells are obtained by adding Laplace noise directly with privacy budget $\frac{(1-f)\epsilon}{T}$. Denote by $count_{PSD}$ the value reported by $PSD$ for a certain level-2 cell. Given the $Lap(\frac{2T}{(1-f)\epsilon})$ distribution, denote the probability that the expected noisy count is larger than zero by
+Assume a simplified version of Algorithm~\ref{algo:kalman} where the noisy counts of individual PSD cells are obtained by adding Laplace noise directly with privacy budget $\frac{(1-f)\epsilon}{T}$. Denote by $count_{PSD}$ the value reported by PSD for a certain level-2 cell. Given the $Lap(\frac{2T}{(1-f)\epsilon})$ distribution, denote the probability that the expected noisy count is larger than zero by
 
 $$p_h=1-\frac{1}{2}exp(-\frac{count_{PSD}(1-f)\epsilon}{2T})$$
 
@@ -1162,7 +1176,7 @@ We consider privacy budget $\epsilon \in$ \{0.1, .., {\bf 0.5}, ..,1\}, ranging 
 We randomly generated $1,000$ tasks and measured the performance of the proposed solution with respect to the metrics in Section~\ref{sec:metrics1}: $\mathit{ASR}$, $\mathit{ANW}$, and $\mathit{WTD}$. 
 To compute $\mathit{ASR}$, we simulate a binomial model as discussed in Section~\ref{sec:acceptance_rate}. Each worker flips a biased coin and decides whether to accept or not a received task request, based on personalized threshold $p^a$ (recall that $p^a$ takes into account distance to task).
 A task is accepted if at least one worker agrees to perform it.
-We consider two $WTD$ variations: $WTD_{NN}$ and $WTD_{FC}$. In the former case, the metric value is determined as the distance from the task to the nearest worker that accepts the task, whereas in the latter, the distance to the first worker that accepts the task is considered (i.e., first-come).
+We consider two $\mathit{ASR}$ variations: $\mathit{WTD_{NN}}$ and $\mathit{WTD_{FC}}$. In the former case, the metric value is determined as the distance from the task to the nearest worker that accepts the task, whereas in the latter, the distance to the first worker that accepts the task is considered (i.e., first-come).
 We also measure the average hop count $\mathit{HOP}$ required for geocast, according to Eq.~\eqref{eq:hops_count}.
 Finally, we also show the results obtained for the average number of cells in a $\mathit{GR}$ ($\mathit{CELL}$) and the compactness of the $\mathit{GR}$. Although these metrics are not directly perceived by the end users, they help us to better understand the underpinnings of the proposed solution.
 All measured results are averaged over ten random seeds.
@@ -1183,7 +1197,7 @@ Specifically, increasing $\epsilon$ provides a more accurate estimation for the 
 As a result, $\mathit{ANW}$ can be more tightly controlled. Moreover, $G$-$\mathit{GP}$ also yields reduced $\mathit{WTD}$ and $\mathit{HOP}$ by up to a factor of 8 and 7, respectively.
 
 On the other hand, $G$-$\mathit{PA}$ obtains lower $\mathit{ASR}$ than the expected utility of $90\%$, particularly for small $\epsilon$. This can be explained based on the fact that applying partial cell selection tends to reduce aggressively the number of workers included in the $\mathit{GR}$, which may result in under-provisioning (i.e., an insufficient number of workers receive task requests). 
-All other methods achieve close to the target $\mathit{EU}$ of $90\%$, but most often this is a result of over-provisioning, which in turn increases $ANW$.
+All other methods achieve close to the target $\mathit{EU}$ of $90\%$, but most often this is a result of over-provisioning, which in turn increases $\mathit{ANW}$.
 
 \begin{figure*}[!ht]
 	\begin{minipage}[b]{0.195\linewidth}
@@ -1456,7 +1470,7 @@ We evaluate the effect of the compactness-guided heuristic for $\mathit{GR}$ con
 \end{figure*}
 
 \textbf{Overhead of Achieving Privacy:}
-We compare the proposed solution with the non-private algorithm for task assignment, described in Section \ref{sec:experimental_setup}. Figure~\ref{fig:privacy_cost} presents the overhead incurred by privacy when varying $\epsilon$ (for brevity, we only show Gowalla results). As expected, when $\epsilon$ increases, the PSD offers more accurate data, and the overhead (in terms of $ANW$, $\mathit{WTD}$ and $\mathit{HOP}$) decreases.
+We compare the proposed solution with the non-private algorithm for task assignment, described in Section \ref{sec:experimental_setup}. Figure~\ref{fig:privacy_cost} presents the overhead incurred by privacy when varying $\epsilon$ (for brevity, we only show Gowalla results). As expected, when $\epsilon$ increases, the PSD offers more accurate data, and the overhead (in terms of $\mathit{ANW}$, $\mathit{WTD}$ and $\mathit{HOP}$) decreases.
 %, represented by the gap between the two lines in the sub-figures, 
 Interestingly though, $\mathit{ASR}$ drops in value. This can be explained through significant over-provisioning that occurs for lower budgets, when the greedy heuristic enlarges the $\mathit{GR}$ in the quest for achieving the desired $\mathit{EU}$. As a result, more workers are notified, and the chances of task acceptance are higher. However, overhead is also much higher.
 %The reason is that the higher budget, the less privacy, the smaller gap between privacy and non-privacy techniques. We observed that the privacy cost in $\mathit{ANW}$ is the largest while the cost of $\mathit{WTD}$ is the smallest. 
@@ -1745,13 +1759,13 @@ We evaluate the performance of $G$-$\mathit{GP}$-$\mathit{Hybrid}$ on the Yelp d
 \label{fig:varying_k}
 \end{figure*}
 
-\textbf{Comparison with WST Benchmark}
+\textbf{Comparison with pull-mode Benchmark}
 
-We evaluate the performance of our technique in comparison with a benchmark that resembles the worker-selected task approach (WST). With the WST method, tasks are being broadcast to workers by the CSP, and there is no disclosure of worker locations to the SC server. However, each worker operates with knowledge of its own location only, which may lead to suboptimal assignment. Only workers within $MTD$ distance of a task are notified.
+We evaluate the performance of our technique in comparison with a benchmark that resembles the pull mode. With the pull mode, tasks are being broadcast to workers by the CSP, and there is no disclosure of worker locations to the SC server. However, each worker operates with knowledge of its own location only, which may lead to suboptimal assignment. Only workers within $MTD$ distance of a task are notified.
 
-Table~\ref{tab:privacy_wst} summarizes the results. We consider as comparison metrics the average number of notified workers ($ANW$), average number of accepting workers ($AAW$), and travel distance (for the latter, our solution considers two cases, the NN and the FC approach). For brevity, we show the overhead of WST compared to our approach, expressed as a multiplicative factor showing how many times higher (i.e., worse) the overhead of WST is.
+Table~\ref{tab:privacy_wst} summarizes the results. We consider as comparison metrics the average number of notified workers ($\mathit{ANW}$), average number of accepting workers ($AAW$), and travel distance (for the latter, our solution considers two cases, the NN and the FC approach). For brevity, we show the overhead of pull-mode compared to our approach, expressed as a multiplicative factor showing how many times higher (i.e., worse) the overhead of pull mode is.
 
-As expected, due to lack of global location information, the benchmark performs poorly. Specifically, the number of notified workers is higher by a factor ranging from 71 (when our method receives the lowest privacy budget) to 125 (for the largest privacy budget setting of 1.0). Such a high $ANW$ value raises serious concerns about the practicality of WST, as a large number of workers must be notified, leading to large consumption of communication bandwidth and battery, both scarce resources for mobile users. The number of accepting workers is larger for WST by a factor ranging from 27 to 47, resulting in an excessive level of task assignment redundancy. The average travel distance is also significantly worse, by a factor ranging from approximately 7 (in the case of FC) to 12 (for our more accurate NN method). These results show that the SAT approach performs far better than the WST method, even when dealing with sanitized (i.e., perturbed) location information.
+As expected, due to lack of global location information, the benchmark performs poorly. Specifically, the number of notified workers is higher by a factor ranging from 71 (when our method receives the lowest privacy budget) to 125 (for the largest privacy budget setting of 1.0). Such a high $\mathit{ANW}$ value raises serious concerns about the practicality of pull mode, as a large number of workers must be notified, leading to large consumption of communication bandwidth and battery, both scarce resources for mobile users. The number of accepting workers is larger for the pull mode by a factor ranging from 27 to 47, resulting in an excessive level of task assignment redundancy. The average travel distance is also significantly worse, by a factor ranging from approximately 7 (in the case of FC) to 12 (for our more accurate NN method). These results show that the push-mode approach performs far better than the pull-mode method, even when dealing with sanitized (i.e., perturbed) location information.
 
 \begin{table}[ht]
 \begin{center}
@@ -1767,7 +1781,7 @@ As expected, due to lack of global location information, the benchmark performs 
 \hline
 1.0 & 125 & 47.61 & 11.90 & 7.75 \tn
 \end{tabular}
-\caption{Performance comparison with WST benchmark.}
+\caption{Performance comparison with pull-mode benchmark.}
 \label{tab:privacy_wst}
 \end{center}
 \end{table}
@@ -1779,9 +1793,9 @@ As expected, due to lack of global location information, the benchmark performs 
 We evaluate the performance of the proposed algorithms for dynamic WorkerPSD from Section~\ref{sec:psd_dynamic}. In our implementation, we use the $G$-$\mathit{GP}$-$\mathit{Hybrid}$ as a single-snapshot base for the dynamic case, and we consider two multiple-snapshot instances: the first uses the Kalman filtering without sampling (denoted as $\mathit{Kalman}$) and the second uses Kalman filtering in conjunction with the PID adaptive sampling (denoted as $\mathit{KalmanPID}$).
 We compare the obtained results against two benchmarks: the non-private case, and the $\mathit{BasicD}$ baseline introduced in Section 6, which divides privacy budget equally among all time instances. For brevity, we present the results only for linear acceptance rate function, as similar results have been observed for the zipf case (the focus of this experiment is on user movement, so the choice of acceptance rate function does not have a significant impact).
 
-Figure~\ref{fig:privacy_cost_d} presents the performance metrics measurements of the considered methods when varying $\epsilon$. For higher $\epsilon$, the PSD offers more accurate data, and the overhead (in terms of $ANW$, $\mathit{WTD}$ and $\mathit{HOP}$) decreases. We observe that both Kalman-based algorithms are superior to $\mathit{BasicD}$ by a significant amount. Furthermore, their performance is not far behind that of the non-private approach. Interestingly, the $\mathit{BasicD}$ baseline obtains a high $\mathit{ASR}$, but this occurs due to excessive over-provisioning at lower budgets. In such cases, the greedy heuristic enlarges the $\mathit{GR}$ to achieve the desired utility, and the overhead is very high.
+Figure~\ref{fig:privacy_cost_d} presents the performance metrics measurements of the considered methods when varying $\epsilon$. For higher $\epsilon$, the PSD offers more accurate data, and the overhead (in terms of $\mathit{ANW}$, $\mathit{WTD}$ and $\mathit{HOP}$) decreases. We observe that both Kalman-based algorithms are superior to $\mathit{BasicD}$ by a significant amount. Furthermore, their performance is not far behind that of the non-private approach. Interestingly, the $\mathit{BasicD}$ baseline obtains a high $\mathit{ASR}$, but this occurs due to excessive over-provisioning at lower budgets. In such cases, the greedy heuristic enlarges the $\mathit{GR}$ to achieve the desired utility, and the overhead is very high.
 
-We also observe that $\mathit{KalmanPID}$ performs better than $\mathit{Kalman}$ in all cases, and particularly when the budget is small (i.e., up to 14\% in $ANW$, $\mathit{WTD}$ and $\mathit{HOP}$). 
+We also observe that $\mathit{KalmanPID}$ performs better than $\mathit{Kalman}$ in all cases, and particularly when the budget is small (i.e., up to 14\% in $\mathit{ANW}$, $\mathit{WTD}$ and $\mathit{HOP}$). 
 The reason for this behavior is the benefit brought by sampling in the case of $\mathit{KalmanPID}$. 
 Due to its superior performance, we focus on $\mathit{KalmanPID}$ for the rest of the experiments.
 
@@ -2209,11 +2223,10 @@ In Section~\ref{sec:architecture} we outline the software architecture of the to
 \subsubsection{System Architecture}
 \label{sec:architecture}
 
-Figure~\ref{fig:architecture} presents the architecture of \PGC, which is currently integrated with MediaQ \cite{kim2014mediaq}, a geospatial crowdsourcing system developed at USC. The GUI is provided to end-users (i.e., CSPs, SC-server administrators or task requesters) entirely in web-based form, which has the benefit of not requiring any additional software to be installed at the client. The web application is written using Javascript, Python, PHP5, and Google Maps API for map rendering. 
+Figure~\ref{fig:architecture} presents the architecture of \PGC, which is currently integrated with MediaQ \cite{kim2014mediaq}, a geospatial crowdsourcing system developed at USC. The GUI is provided to end-users (i.e., CSPs, SC-server administrators or task requesters) entirely in web-based form, which has the benefit of not requiring any additional software to be installed at the client. The web application is written using Javascript, Python, PHP5, and Google Maps API for map rendering. The GeoCrowd API provides SC services \cite{kim2014mediaq} such as profile management, etc. The worker location datasets are stored in a MySQL database, which can be queried using the CSP API to generate sanitized PSDs.
+
 %The CSP API includes services for SCP to publish private location data and geocast a given {\em GR}, 
-The GeoCrowd API provides SC services \cite{kim2014mediaq} such as profile management, etc. 
 %Particularly, GeoCrowd API has a service to update {\em GR} construction parameters. 
-The worker location datasets are stored in a MySQL database, which can be queried using the CSP API to generate sanitized PSDs.
 % The PSD is an in-memmory adaptive grid using Tornado, a Python web server. The PSD API is an intemediate interface to 
 %separate the web service layer and the data store. The interface 
 %provide request handlers for the SCP API and the GeoCrowd API to release sanitized data and to update geocast algorithm parameters, respectively.
@@ -2226,7 +2239,7 @@ The worker location datasets are stored in a MySQL database, which can be querie
 
 \begin{figure}[!htb]\centering
   \includegraphics[width=1.0\columnwidth]{figures/architecture.jpg}
-  \caption{Architecture of PrivGeoCrowd}
+  \caption{Architecture of \PGC}
   \label{fig:architecture}
 \end{figure}
 
@@ -2294,7 +2307,7 @@ During the demonstration, we will highlight the role of \PGC\ in evaluating the 
    
    
    
-\textbf{Dense vs Sparse Area}: Figure~\ref{fig:dense_sparse} shows the effect of worker density on the size of obtained $\mathit{GR}$s. One can observe that the $\mathit{GR}$ obtained in the left-hand side of the figure, corresponding to a sparse suburb area of Phoenix, AZ (Yelp dataset) is much larger than the $\mathit{GR}$ obtained in a denser downtown area of the same dataset. On the other hand, the denser the population, the higher granularity of the {\em AG}. This confirms that our customized {\em AG} \cite{to2014framework} adapts greatly to the worker density.
+\textbf{Dense vs Sparse Area}: Figure~\ref{fig:dense_sparse} shows the effect of worker density on the size of obtained $\mathit{GR}$s. One can observe that the $\mathit{GR}$ obtained in the left-hand side of the figure, corresponding to a sparse suburb area of Phoenix, AZ (Yelp dataset) is much larger than the $\mathit{GR}$ obtained in a denser downtown area of the same dataset. On the other hand, the denser the population, the higher granularity of the {\em AG}. This confirms that our customized {\em AG}~\cite{to2014framework} adapts greatly to the worker density.
 
 %This simplistic example is just an immediate illustration of the density effect, but \PGC\ can allow an in-depth analysis of more advanced scenarios where the density effect is studied in conjunction with varying other system parameters.
 % Also, there are some $\mathit{GR}$s with partial cell demonstrate the usefulness of sub-cell optimization.
@@ -2335,7 +2348,7 @@ During the demonstration, we will highlight the role of \PGC\ in evaluating the 
 
 \section{Protecting Locations of Workers and Tasks Without Trusted Third Party}
 The remainder of this thesis is organized as follows.
-Section~\ref{sec:framework} introduces SCGuard, and Section~\ref{sec:ota} details our proposed solution. Experimental results are presented in Section~\ref{sec:evaluation}.
+Section~\ref{sec:framework} introduces \SCG, and Section~\ref{sec:ota} details our proposed solution. Experimental results are presented in Section~\ref{sec:evaluation}.
 
 \subsection{The SCGaurd Privacy Framework}
 \label{sec:framework}
@@ -2350,11 +2363,11 @@ We first define the notions of spatial task and worker. A \emph{spatial task} $t
 A \emph{worker}, denoted by $w$, is a carrier of a mobile device who volunteers for one of the spatial tasks.
 Each worker has a location $l_w$ and a \emph{spatial region} $R_w$, wherein the worker can accept spatial tasks. $R_w$ is represented by a circular region centered at the worker's location. Hence, $R_w$ also refers to a \emph{reachable distance} of the worker---task $t$ is reachable from worker $w$ iff $\mathit{d(w,t)\le R_w}$. During tasking, we assume that each worker performs a single task, and all workers perform every task correctly so that every task needs to be assigned to one and only one worker. We also assume that tasks will not expire during the assignment period.
 
-We focus on \emph{online assignment} where the set of workers $W$ is given in advance while each task in the task set $T$ arrives online (i.e., one at a time). Without privacy protection, the optimal algorithm in terms of maximizing the number of assigned tasks is Ranking~\cite{karp1990optimal}. The algorithm associates each worker with a random number (or rank) so that each task, upon its arrival, is assigned to an unmatched reachable worker of the highest rank\footnote{We also consider distance-based ranking for travel cost optimization in Section~\ref{sec:non-private}}. This algorithm can entirely run on the server. However, with privacy protection, locations of workers and tasks become uncertain, which complicates the task assignment. We propose a privacy-aware framework, named SCGuard, for online tasking that involves three distinct stages as follows (see Figure~\ref{fig:privacy_framework}).
+We focus on \emph{online assignment} where the set of workers $W$ is given in advance while each task in the task set $T$ arrives online (i.e., one at a time). Without privacy protection, the optimal algorithm in terms of maximizing the number of assigned tasks is Ranking~\cite{karp1990optimal}. The algorithm associates each worker with a random number (or rank) so that each task, upon its arrival, is assigned to an unmatched reachable worker of the highest rank\footnote{We also consider distance-based ranking for travel cost optimization in Section~\ref{sec:non-private}}. This algorithm can entirely run on the server. However, with privacy protection, locations of workers and tasks become uncertain, which complicates the task assignment. We propose a privacy-aware framework, named \SCG, for online tasking that involves three distinct stages as follows (see Figure~\ref{fig:privacy_framework}).
 
 In the first stage, to ensure privacy, each worker $w$ perturbs his location $l_w$ with a specified privacy level ($\epsilon,r$) according to the Geo-I mechanism and sends the noisy location $l_{w'}$ together with his reachable distance $R_w$ to the server. Upon the arrival of task $t$, the requester of $t$ perturbs its location $l_t$ with different privacy level ($\epsilon,r$)-Geo-I and sends the perturbed one $l_{t'}$ to the server. The main role of the server is to identify a set of \emph{candidate workers} for the task and then forward their information (i.e., $l_{w'}$ and $R_w$) to the requester. We refer to the first stage as \underline{u}ncertain-\underline{to}-\underline{u}ncertain (\textbf{U2U}) because the locations of both workers and tasks are \underline{u}ncertain to the \emph{server}---the server knows only perturbed locations of workers and tasks. There is no location disclosure at this stage because locations of both task and worker are hidden from all three adversaries. 
 
-The requester, on receipt of the information of the workers, conducts the second stage of SCGuard without any communication with the server. We isolate this stage from the server to ensure no disclosure to the server. During this stage, the requester sends her task location to the candidate worker $w$ who is most likely reachable within distance $R_w$. We call this stage \underline{u}ncertain-\underline{to}-\underline{e}xact (\textbf{U2E}) because the requester knows the \underline{e}xact location of her task and needs to make a decision as to whether a particular candidate worker is reachable to the task given the worker's perturbed location. This process repeats until the task is assigned or no candidate worker is left.
+The requester, on receipt of the information of the workers, conducts the second stage of \SCG\ without any communication with the server. We isolate this stage from the server to ensure no disclosure to the server. During this stage, the requester sends her task location to the candidate worker $w$ who is most likely reachable within distance $R_w$. We call this stage \underline{u}ncertain-\underline{to}-\underline{e}xact (\textbf{U2E}) because the requester knows the \underline{e}xact location of her task and needs to make a decision as to whether a particular candidate worker is reachable to the task given the worker's perturbed location. This process repeats until the task is assigned or no candidate worker is left.
 We discuss three approaches for selecting a candidate worker in Section~\ref{sec:ota}.
 
 The third and final stage, \underline{e}xact-\underline{to}-\underline{e}xact (\textbf{E2E}), is performed by the selected candidate workers. At this point, the requester releases the actual location of the task to the worker, resulting in some disclosure. The worker can verify if the task is reachable by comparing his distance to the task, i.e., $\mathit{d(w,t)\le R_w}$. If the task is reachable, the worker performs the task, and we consider that the task is assigned; otherwise, he rejects the task. Table~\ref{tab:notation2} summarizes the notations used in this paper.
@@ -2399,7 +2412,7 @@ $\alpha, \beta$ & reachability thresholds during U2U and U2E\tn
 \begin{figure}[ht]
 		\centering
 \includegraphics[width=0.75\textwidth]{figs/privacy_framework}
-	\caption{SCGuard: privacy-aware framework for spatial crowdsourcing.}
+	\caption{\SCG: privacy-aware framework for spatial crowdsourcing.}
 	\label{fig:privacy_framework}
 \end{figure}
 
@@ -2413,7 +2426,7 @@ Another alternative design choice for the U2E stage is for the server to rank th
 \subsubsection{Adversary Model}
 
 % assumptions
-The adversary model has two core assumptions. First, we assume that all participating entities (server, worker, requester) are curious but not malicious. This means that each entity may learn more than what is exposed during the three stages of SCGuard, but they comply with the protocol. The second assumption is that any two entities do not collude with each other to gain information about the third. For instance, if the server wants to collect the location of a requester's task, he may not collude with the workers to learn this information. In what follows, we analyze potential disclosure of location information during each stage of the protocol.
+The adversary model has two core assumptions. First, we assume that all participating entities (server, worker, requester) are curious but not malicious. This means that each entity may learn more than what is exposed during the three stages of \SCG, but they comply with the protocol. The second assumption is that any two entities do not collude with each other to gain information about the third. For instance, if the server wants to collect the location of a requester's task, he may not collude with the workers to learn this information. In what follows, we analyze potential disclosure of location information during each stage of the protocol.
 
 % controlled disclosure to the server
 During U2U the server takes as input the perturbed locations of both workers and tasks to perform effective task assignment; 
@@ -2437,7 +2450,7 @@ Protecting locations of both workers and tasks significantly complicates task as
 To measure these, we introduce the following \emph{end-to-end} performance metrics:
 \begin{itemize}
 \item
-{\bf Utility.} The performance of SCGuard is measured by the \emph{number of assigned tasks}.
+{\bf Utility.} The performance of \SCG\ is measured by the \emph{number of assigned tasks}.
 %\footnote{This metric does not capture worker reliability, tasks may still fail to complete after being accepted. Our focus is on assignment success, reliability is outside our scope.}. 
 Due to data uncertainty, the server may incorrectly identify candidate workers for a task. The challenge is to obtain a high number of assigned tasks in the presence of uncertainty.
 \item
@@ -2449,7 +2462,7 @@ With imprecise locations, the server is no longer able to accurately estimate th
 poses scalability problems. A significant metric to measure overhead is the \emph{size of the worker candidate set} for a task. This number represents both the communication overhead (server sends the candidate set to the requester) and computational overhead (requester ranks the workers in the candidate set based on certain criteria).
 \end{itemize}
 
-In addition, we also report \emph{per-stage} metrics to better understand the performance as well as potential location disclosure of each stage of SCGuard.
+In addition, we also report \emph{per-stage} metrics to better understand the performance as well as potential location disclosure of each stage of \SCG.
 \begin{itemize}
 \item
 {\bf Precision/Recall (U2U).} For each task we measure the ratio of the candidate workers who are reachable (precision) and the ratio of the reachable workers in the candidate set (recall).
@@ -2625,7 +2638,7 @@ We used the Scipy library to efficiently compute the \emph{pdf} of the Rice dist
 \subsubsection{Empirical Approach}
 \label{sec:empirical}
 
-The analytical approach above provides a fast but approximate way to compute the reachability probability. We present an empirical approach that computes the probability from synthetically generated or past data. We show the simulation for each stage of SCGuard as follows.
+The analytical approach above provides a fast but approximate way to compute the reachability probability. We present an empirical approach that computes the probability from synthetically generated or past data. We show the simulation for each stage of \SCG\ as follows.
 
 For \textbf{U2U}, we generate random locations for a large number of worker-task pairs in a certain region of interest (i.e., Beijing City). All generated locations are perturbed according to ($\epsilon,r$)-Geo-I using random seeds. For each worker-task pair, both the actual distance $d$ and the corresponding noisy distance $d'$ are calculated. The noisy distances are grouped into disjoint ranges: [0...s), [s...2s), ... , [120s...$\infty$), where $s$=100 meters; each range maps to a set of actual distances. We first compute a distribution of $d$ for each range of $d'$. For example, Figure~\ref{fig:actual_dist} shows the distribution of $d$ for a particular range of $d$ ($1900\le d'< 2000$). This distribution centers at the corresponding range of $d'$. Then, the distribution of $d$ can be precomputed for every range of $d'$ and every privacy level ($\epsilon, r$). Consequently, given $\epsilon, r, d'$ from the distribution of $d$, we can compute the reachability probability between a worker and a task as $\mathit{Pr\big(d(w,t) \le R_w | \epsilon,r,d(w',t')\big)}$.
 For \textbf{U2E}, we need to precompute the distribution of $d$ for every range of $\epsilon, r$ and $d'$, but now $d'$ is between a random pair of perturbed and exact locations: $\mathit{Pr\big(d(w,t) \le R_w | \epsilon,r,d(w',\mathbf{t})\big)}$.
@@ -2711,7 +2724,7 @@ Line~\ref{line:pruning} of Algorithm~\ref{alg:probabilistic} linearly checks all
 First, each worker (or task) corresponds to a disk with radius $r_R$, centering at the perturbed location such that the actual location is within the disk with probability at least $\gamma$ (see Section 5 in~\cite{andres2013geo} on how to compute $r_R$). The disks are depicted by the solid circles in Figure~\ref{fig:pruning_u2u}, denoted as $disk(l_{w'},r_R)$ and $disk(l_{t'},r_R)$. Hence, the outer dashed circle represents a region $disk(l_{w'},r_R+R_w)$ that encloses any point in the worker's spatial region $R_w$ with probability at least $\gamma$. Subsequently, we approximate the worker by the larger minimum bounding box (MBR) and the task by the smaller MBR in Figure~\ref{fig:pruning_u2u}.
 
 In the second step, we build an index to quickly prune far-away workers from a task without a full linear scan by applying existing techniques in the uncertain database field~\cite{tao2007range,bernecker2011novel}. For example, the fuzzy search technique in~\cite{tao2007range} is suitable when both data and query (workers and tasks in our context) are represented by rectangles. Applying this pruning technique on the approximated MBRs of workers and tasks gives us a lower bound of $\gamma$ on the reachability probability during U2U. This is because a worker and a task are not reachable from each other if their MBRs do not overlap.
-Note that pruning workers during U2U makes sense since it is the most time-consuming stage of SCGuard. %We do not include this runtime improvement in the experiments as it is not the focus of this paper.
+Note that pruning workers during U2U makes sense since it is the most time-consuming stage of \SCG. %We do not include this runtime improvement in the experiments as it is not the focus of this paper.
 % and those invalidated workers are unlikely to be selected in the later stage (U2E).
 
 %Therefore, we want to achieve high recall score, meaning that reachable workers are returned for each task with high probability. This results in more assigned tasks. A similar problem has been studied in the context of location-based queries such as 	searching nearby restaurants. The goal is to define an area of retrieval as small as possible but still contains the area of interest with high probability~\cite{andres2013geo}. Unlike this work, our objective is to compute a (noisy) \emph{matching distance} for each worker $M_w$ to ensure a high recall score. 
@@ -2760,7 +2773,7 @@ Particularly, the requester evaluates the reachability probability between all c
 \subsection{Performance Evaluation}
 \label{sec:evaluation}
 
-We conducted several experiments on real-world data to evaluate the performance of our proposed framework, SCGuard. Below, we present the experimental setup in Section~\ref{sec:methodology}, followed by results in Section~\ref {sec:results}.
+We conducted several experiments on real-world data to evaluate the performance of our proposed framework, \SCG. Below, we present the experimental setup in Section~\ref{sec:methodology}, followed by results in Section~\ref {sec:results}.
 
 \subsubsection{Experimental Setup}
 \label{sec:methodology}
@@ -2935,7 +2948,7 @@ We also observe that as $\epsilon$ grows (less privacy), the worker travel cost 
 
 Figures~\ref{fig:base_reach_FH},~\ref{fig:base_reach_CAN} show the results when varying privacy loss $\epsilon$.
 Although the overhead of \emph{Probabilistic-Model} is slightly higher than \emph{Oblivious-RN}'s (i.e., up to 500 workers vs. up to 400 workers in the candidate set), \emph{Probabilistic-Model} has a much smaller disclosure of location information (i.e., up to 14 false hits vs. up to 1239 false hits). This means that before a task can be assigned, \emph{Oblivious-RN} needs to send the task to $\sim$23 workers on average while the number is $\sim$1.05 for \emph{Probabilistic-Model}. Unlike \emph{Oblivious-RN}, \emph{Probabilistic-Model} usually identifies a candidate worker who is reachable to a task at the first try, without the need of sending the task to multiple workers during U2E. This result shows that our proposed approaches, the probability-based ranking and the thresholding heuristic in Section~\ref{sec:u2e_improve}, effectively limit the disclosure of location information.
-This is crucial because the disclosure of location information (among requesters and workers) is the only privacy leak in SCGuard.
+This is crucial because the disclosure of location information (among requesters and workers) is the only privacy leak in \SCG.
 
 We also show the impact of privacy loss $\epsilon$ on system overhead and privacy leak. As expected, when $\epsilon$ increases (less privacy), system overhead and privacy leak decrease while both precision and recall increase.
 % TODO: CAN BE REMOVED
@@ -3015,7 +3028,18 @@ In sum, to reduce privacy leak, the value of U2E threshold $\beta$ should be as 
 
 \chapter{Conclusion}
 
-In this thesis, we introduced novel privacy-aware frameworks to protect locations of both workers and tasks in spatial crowdsourcing. Our study enables the participation of workers and requesters without compromising their location privacy. We then identify potential privacy threats from the adversaries (server, requester and worker) and present countermeasures to prevent such threats from occurring. We also introduce the performance metrics to evaluate and compare our different privacy-preserving algorithms.  Our experimental results on real data demonstrated that the proposed techniques achieve high task assignment rate, small travel cost and low system overhead when compared to the non-private setting.
+With the popularity of mobile devices, spatial crowdsourcing is rising as a framework that enables
+human workers to solve tasks in the physical world. With spatial crowdsourcing, requesters outsource a set of spatiotemporal tasks to a set of workers, i.e., individuals with mobile devices that perform the tasks by physically traveling to the specified locations of interest. However, current solutions require a worker to disclose his location to the server and/or to other requesters even before accepting a task---or a requester to disclose his tasks' locations, which can be used to infer his own location, to untrusted entities.
+
+In this thesis, we identified potential privacy threats from the adversaries (server, requester and worker) and present countermeasures to prevent such threats from occurring. We introduced novel privacy-aware frameworks to protect locations of both workers and tasks in spatial crowdsourcing. 
+The first framework~\cite{to2014framework} enables the participation of workers without compromising their location privacy.
+We identified geocasting as a needed step to ensure that privacy is protected prior to workers consenting to a task. We also provided heuristics and optimizations for determining effective geocast regions that achieve high task assignment rate with low overhead. Our experimental results on real data demonstrated that the proposed techniques are effective, and the cost of privacy is practical.
+The second framework~\cite{to2018privacy} protects locations of both workers and tasks in spatial crowdsourcing without any trusted entity. We proposed models for quantifying the probability of reachability between a worker and a task, from which the probability-based algorithm was introduced to assign tasks to workers in an online manner. We introduced the performance metrics to evaluate and compare our different privacy-preserving algorithms. Our experimental results on real data demonstrated that the proposed techniques, algorithms, and heuristics achieve high utility, small worker travel cost, and low disclosure of location information.
+
+As future directions, we plan to use the optimal geo-indistinguishable mechanisms~\cite{bordenabe2014optimal} and adopt the elastic distinguishability metric~\cite{chatzikokolakis2015constructing} to further improve the utility of the task assignment. The reason is that Geo-I is based on Euclidean distance, meaning that privacy protection is uniform in space. However, in spatial crowdsourcing, we may want to tune the amount of noise injected to each location, such as less noise to dense areas and more noise to sparse areas. Another promising direction is to consider powerful adversaries with knowledge about temporal correlations of a moving user's locations~\cite{xiao2015protecting}. We may also consider collusion between workers and the server; for example, some workers may work for the spatial crowdsourcing company or the company may use driverless cars.
+
+
+
 
 %\bibliographystyle{namedplus}
 %\bibliographystyle{natbib}
