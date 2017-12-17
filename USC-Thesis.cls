@@ -168,7 +168,7 @@ for the Degree of Doctor of Philosophy in Computer Science \\
 Viterbi School of Engineering \\
 University of Southern California \\
 Accepted by: \\
-Cyrus Shahabi, Qualifying and Defense Committee Chair \\
+Cyrus Shahabi, Committee Chair \\
 Li Xiong, Committee Member \\
 Aiichiro Nakano, Committee Member \\
 Panayiotis Georgiou, External Committee Member \\
